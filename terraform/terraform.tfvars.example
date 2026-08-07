@@ -1,0 +1,13 @@
+# Copy this to terraform.tfvars and adjust before the session.
+# This is the CLEAN path - everything passes the AI review.
+
+project_name = "aidemo"
+environment  = "staging"
+location     = "eastus"
+owner_tag    = "platform-team"
+
+app_service_sku = "B1"
+
+sql_admin_login                   = "sqladmin"
+sql_public_network_access_enabled = false
+sql_sku_name                      = "Basic"

@@ -1,0 +1,14 @@
+{
+  "name": "terraform-azure-mcp-demo",
+  "version": "1.0.0",
+  "description": "MCP server exposing scoped Terraform + Azure tools for the ChatOps demo",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.5.0",
+    "zod": "^3.23.8"
+  }
+}

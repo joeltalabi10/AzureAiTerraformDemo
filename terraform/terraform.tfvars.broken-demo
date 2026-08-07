@@ -1,0 +1,28 @@
+# DO NOT MERGE THIS FILE'S SETTINGS TO MAIN.
+#
+# This is the DELIBERATE FLAW variant for the live demo (Segment 4, step 3
+# in the run-of-show script). Use this on a throwaway branch, open a PR,
+# and let the AI reviewer catch sql_public_network_access_enabled = true
+# live in front of the room.
+#
+# Usage:
+#   git checkout -b demo/insecure-sql
+#   cp terraform/terraform.tfvars.broken-demo terraform/terraform.tfvars
+#   git add terraform/terraform.tfvars
+#   git commit -m "demo: staging DB for payments"
+#   git push -u origin demo/insecure-sql
+#   # open the PR, watch the AI review comment land
+
+project_name = "aidemo"
+environment  = "staging"
+location     = "eastus"
+owner_tag    = "platform-team"
+
+app_service_sku = "B1"
+
+sql_admin_login = "sqladmin"
+
+# <-- THIS is the flaw the AI reviewer should catch
+sql_public_network_access_enabled = true
+
+sql_sku_name = "Basic"

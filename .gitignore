@@ -1,0 +1,29 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.binary
+crash.log
+crash.*.log
+terraform.tfvars
+!terraform.tfvars.example
+!terraform.tfvars.broken-demo
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+
+# Misc
+.DS_Store
+review_comment.md
+plan.json
