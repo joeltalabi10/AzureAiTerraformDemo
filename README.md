@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI-Augmented Terraform on Azure — Live Demo Kit
 
 Companion repo to the "From Prompt to Production" workshop. This is a
@@ -59,3 +60,6 @@ mcp-server/
 
 Everything defaults to the cheapest viable SKU (App Service B1, SQL Basic).
 Still — run `scripts/teardown.sh` immediately after the session.
+=======
+# AzureAiTerraformDemo
+>>>>>>> 03df2aafbd65ccf8b3a34f2f771adbf5a3dfe1de
