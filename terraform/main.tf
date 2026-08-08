@@ -1,5 +1,9 @@
 locals {
   name_prefix = "${var.project_name}-${var.environment}"
+  resource_group_name = coalesce(
+    var.resource_group_name,
+    "rg-${local.name_prefix}"
+  )
 
   required_tags = {
     owner       = var.owner_tag
@@ -15,10 +19,8 @@ resource "random_string" "unique" {
   upper   = false
 }
 
-resource "azurerm_resource_group" "main" {
-  name     = "rg-${local.name_prefix}"
-  location = var.location
-  tags     = local.required_tags
+data "azurerm_resource_group" "main" {
+  name = local.resource_group_name
 }
 
 # ---------------------------------------------------------------------------
@@ -27,8 +29,8 @@ resource "azurerm_resource_group" "main" {
 
 resource "azurerm_service_plan" "main" {
   name                = "asp-${local.name_prefix}"
-  resource_group_name = azurerm_resource_group.main.name
-  location            = azurerm_resource_group.main.location
+  resource_group_name = data.azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.main.location
   os_type             = "Linux"
   sku_name            = var.app_service_sku
   tags                = local.required_tags
@@ -36,7 +38,7 @@ resource "azurerm_service_plan" "main" {
 
 resource "azurerm_linux_web_app" "main" {
   name                = "app-${local.name_prefix}-${random_string.unique.result}"
-  resource_group_name = azurerm_resource_group.main.name
+  resource_group_name = data.azurerm_resource_group.main.name
   location            = azurerm_service_plan.main.location
   service_plan_id     = azurerm_service_plan.main.id
   tags                = local.required_tags
@@ -53,7 +55,7 @@ resource "azurerm_linux_web_app" "main" {
 
   app_settings = {
     "SQL_CONNECTION_STRING" = "@Microsoft.KeyVault(SecretUri=placeholder)" # wire to Key Vault in a real env
-    "ENVIRONMENT"            = var.environment
+    "ENVIRONMENT"           = var.environment
   }
 }
 
@@ -72,8 +74,8 @@ resource "random_password" "sql_admin" {
 
 resource "azurerm_mssql_server" "main" {
   name                         = "sql-${local.name_prefix}-${random_string.unique.result}"
-  resource_group_name          = azurerm_resource_group.main.name
-  location                     = azurerm_resource_group.main.location
+  resource_group_name          = data.azurerm_resource_group.main.name
+  location                     = data.azurerm_resource_group.main.location
   version                      = "12.0"
   administrator_login          = var.sql_admin_login
   administrator_login_password = random_password.sql_admin.result
@@ -90,11 +92,11 @@ resource "azurerm_mssql_server" "main" {
 }
 
 resource "azurerm_mssql_database" "main" {
-  name         = "sqldb-${local.name_prefix}"
-  server_id    = azurerm_mssql_server.main.id
-  sku_name     = var.sql_sku_name
+  name           = "sqldb-${local.name_prefix}"
+  server_id      = azurerm_mssql_server.main.id
+  sku_name       = var.sql_sku_name
   zone_redundant = false
-  tags         = local.required_tags
+  tags           = local.required_tags
 }
 
 # Locks the SQL server down to Azure services only when public access is off.

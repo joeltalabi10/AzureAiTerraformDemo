@@ -6,6 +6,9 @@ environment  = "staging"
 location     = "eastus"
 owner_tag    = "platform-team"
 
+# Must already exist. setup.sh creates rg-aidemo-staging by default.
+resource_group_name = "rg-aidemo-staging"
+
 app_service_sku = "B1"
 
 sql_admin_login                   = "sqladmin"

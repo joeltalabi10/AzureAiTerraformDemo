@@ -21,6 +21,12 @@ variable "location" {
   default     = "eastus"
 }
 
+variable "resource_group_name" {
+  description = "Existing resource group where Terraform should deploy resources. Defaults to rg-<project_name>-<environment>."
+  type        = string
+  default     = null
+}
+
 variable "owner_tag" {
   description = "Who owns this environment, for the required-tags policy"
   type        = string
