@@ -7,7 +7,7 @@ location     = "eastus"
 owner_tag    = "platform-team"
 
 # Must already exist. setup.sh creates rg-aidemo-staging by default.
-resource_group_name = "rg-aidemo-staging"
+resource_group_name = "rg-aidemo-staging-eus2"
 
 app_service_sku = "B1"
 
